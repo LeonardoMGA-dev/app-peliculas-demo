@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">app-entrevista-grupo-salinas</string>
+    <string name="title_domain">Domain module</string>
 </resources>
