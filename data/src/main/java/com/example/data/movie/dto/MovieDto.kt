@@ -1,8 +1,7 @@
 package com.example.data.movie.dto
 
+import com.example.data.dto.MediaContent
 import com.google.gson.annotations.SerializedName
-import java.util.*
-import kotlin.collections.ArrayList
 
 data class GetMoviesResponseDto(
     val page: Int,
@@ -10,10 +9,10 @@ data class GetMoviesResponseDto(
     @SerializedName("total_pages")
     val totalPages: Int,
 
-    val results: List<MovieResponseDto>
+    val results: List<MovieDto>
 )
 
-data class MovieResponseDto(
+data class MovieDto (
     val id: Int,
 
     val title: String,
@@ -23,7 +22,7 @@ data class MovieResponseDto(
 
     @SerializedName("release_date")
     val releaseDate: String
-)
+) : MediaContent
 
 data class GetMoviesRequestDto(
     val category: String

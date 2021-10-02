@@ -15,7 +15,7 @@ class RemoteMovieRepositoryImp @Inject constructor(
 ) : MovieRepository {
 
     override fun getMovies(useCaseInput: UseCaseInput): UseCaseResult {
-        val movieCategory = useCaseInput.getData<GetMoviesRequestDto>().category
+        val movieCategory = useCaseInput.getData<String>()
         try {
             restService.getMovies(movieCategory).execute().let { response ->
                 return if (response.isSuccessful) {
