@@ -1,11 +1,13 @@
 package com.example.app_entrevista_grupo_salinas
 
+import androidx.fragment.app.Fragment
+import com.example.data.dto.MediaContent
+
 interface MainNavigation {
 
     fun launchHomeFragment()
     fun launchMoviesFragment()
     fun launchShowsFragment()
-    fun launchMovieDetailFragment(movieId: Int)
-    fun launchShowDetailFragment(showId: Int)
+    fun launchMediaContentDetailFragment(mediaContent: MediaContent)
 
 }

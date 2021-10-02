@@ -20,8 +20,14 @@ data class MovieDto (
     @SerializedName("poster_path")
     val posterPath: String,
 
+    @SerializedName( "backdrop_path")
+    val backdrop_path: String,
+
     @SerializedName("release_date")
-    val releaseDate: String
+    val releaseDate: String,
+
+    val overview: String
+
 ) : MediaContent
 
 data class GetMoviesRequestDto(

@@ -2,6 +2,7 @@ package com.example.data.di
 
 import com.example.data.business.movie.repository.RemoteMovieRepositoryImp
 import com.example.data.business.show.repository.RemoteShowRepositoryImp
+import com.example.data.cache.MoviesCache
 import com.example.data.networking.AuthInterceptor
 import com.example.data.networking.RestService
 import com.example.domain.movie.usecase.GetMoviesUseCase
@@ -38,6 +39,12 @@ object DataDIProvider {
     @Singleton
     fun providesRestService(retrofit: Retrofit): RestService {
         return retrofit.create(RestService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesMoviesCache(): MoviesCache{
+        return MoviesCache()
     }
 
     @Provides

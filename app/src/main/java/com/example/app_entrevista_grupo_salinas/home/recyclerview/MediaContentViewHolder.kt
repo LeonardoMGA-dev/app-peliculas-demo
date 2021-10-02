@@ -12,7 +12,10 @@ class MediaContentViewHolder(private val view: View) : RecyclerView.ViewHolder(v
 
     private val binding = MediaContentItemBinding.bind(view)
 
-    fun bind(mediaContent: MediaContent) {
+    fun bind(mediaContent: MediaContent, onClick: (MediaContent) -> Unit ) {
+        binding.mediaContentItemImageView.setOnClickListener {
+            onClick(mediaContent)
+        }
         when (mediaContent) {
             is MovieDto -> {
                 Glide.with(view)

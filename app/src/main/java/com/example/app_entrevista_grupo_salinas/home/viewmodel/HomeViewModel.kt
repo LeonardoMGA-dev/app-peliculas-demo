@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.dto.MediaContent
 import com.example.data.business.movie.dto.GetMoviesResponseDto
 import com.example.data.business.show.dto.GetShowsResponseDto
+import com.example.data.cache.MoviesCache
 import com.example.data.utils.MediaContentCategory
 import com.example.domain.movie.usecase.GetMoviesUseCase
 import com.example.domain.show.usecase.GetShowsUseCase
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getMoviesUseCase: GetMoviesUseCase,
-    private val getShowsUseCase: GetShowsUseCase
+    private val getShowsUseCase: GetShowsUseCase,
+    private val moviesCache: MoviesCache
 ) : ViewModel() {
 
     data class MediaContentResult(
@@ -39,6 +41,7 @@ class HomeViewModel @Inject constructor(
                 when (result) {
                     is UseCaseResult.Success -> {
                         val data = result.getData<GetMoviesResponseDto>()
+                        moviesCache.add(data.results)
                         launch(Dispatchers.Main.immediate) {
                             _mediaContentLiveData.value = MediaContentResult(data.results, category)
                         }

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.app_entrevista_grupo_salinas.R
 import com.example.data.dto.MediaContent
 
-class MediaContentAdapter : RecyclerView.Adapter<MediaContentViewHolder>() {
+class MediaContentAdapter(private val onClick: (MediaContent) -> Unit) : RecyclerView.Adapter<MediaContentViewHolder>() {
 
     private val items = mutableListOf<MediaContent>()
 
@@ -17,7 +17,7 @@ class MediaContentAdapter : RecyclerView.Adapter<MediaContentViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MediaContentViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position], onClick)
     }
 
     override fun getItemCount(): Int {
