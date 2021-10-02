@@ -1,10 +1,11 @@
 package com.example.data.di
 
-import com.example.data.movie.repository.RemoteMovieRepositoryImp
+import com.example.data.business.movie.repository.RemoteMovieRepositoryImp
+import com.example.data.business.show.repository.RemoteShowRepositoryImp
 import com.example.data.networking.AuthInterceptor
 import com.example.data.networking.RestService
-import com.example.domain.movie.repository.MovieRepository
 import com.example.domain.movie.usecase.GetMoviesUseCase
+import com.example.domain.show.usecase.GetShowsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,8 +41,13 @@ object DataDIProvider {
     }
 
     @Provides
-    fun provideRemoteGetMoviesUseCase(restService: RestService): GetMoviesUseCase {
+    fun providesRemoteGetMoviesUseCase(restService: RestService): GetMoviesUseCase {
         return GetMoviesUseCase(RemoteMovieRepositoryImp(restService))
+    }
+
+    @Provides
+    fun providesRemoteGetShowsUseCase(restService: RestService): GetShowsUseCase {
+        return GetShowsUseCase(RemoteShowRepositoryImp(restService))
     }
 
 }

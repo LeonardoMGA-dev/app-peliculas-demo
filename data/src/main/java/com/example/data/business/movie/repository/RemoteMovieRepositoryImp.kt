@@ -1,8 +1,6 @@
-package com.example.data.movie.repository
+package com.example.data.business.movie.repository
 
 import com.example.data.errors.ErrorCodes
-import com.example.data.movie.dto.GetMoviesRequestDto
-import com.example.data.movie.dto.GetMoviesResponseDto
 import com.example.data.networking.RestService
 import com.example.domain.movie.repository.MovieRepository
 import com.example.domain.util.UseCaseInput

@@ -1,30 +1,28 @@
-package com.example.data.movie.dto
+package com.example.data.business.show.dto
 
 import com.example.data.dto.MediaContent
 import com.google.gson.annotations.SerializedName
 
-data class GetMoviesResponseDto(
+data class GetShowsResponseDto(
     val page: Int,
 
     @SerializedName("total_pages")
     val totalPages: Int,
 
-    val results: List<MovieDto>
+    val results: List<ShowDto>,
 )
 
-data class MovieDto (
+data class ShowDto(
     val id: Int,
 
-    val title: String,
+    val name: String,
 
     @SerializedName("poster_path")
     val posterPath: String,
 
     @SerializedName("release_date")
-    val releaseDate: String
+    val releaseDate: String,
+
+    val overview: String
+
 ) : MediaContent
-
-data class GetMoviesRequestDto(
-    val category: String
-)
-

@@ -5,7 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.app_entrevista_grupo_salinas.databinding.MediaContentItemBinding
 import com.example.data.dto.MediaContent
-import com.example.data.movie.dto.MovieDto
+import com.example.data.business.movie.dto.MovieDto
+import com.example.data.business.show.dto.ShowDto
 
 class MediaContentViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
@@ -14,6 +15,11 @@ class MediaContentViewHolder(private val view: View) : RecyclerView.ViewHolder(v
     fun bind(mediaContent: MediaContent) {
         when (mediaContent) {
             is MovieDto -> {
+                Glide.with(view)
+                    .load("https://image.tmdb.org/t/p/w500${mediaContent.posterPath}")
+                    .into(binding.mediaContentItemImageView)
+            }
+            is ShowDto -> {
                 Glide.with(view)
                     .load("https://image.tmdb.org/t/p/w500${mediaContent.posterPath}")
                     .into(binding.mediaContentItemImageView)
