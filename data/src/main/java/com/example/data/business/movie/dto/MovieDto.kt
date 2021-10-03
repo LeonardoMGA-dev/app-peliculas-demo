@@ -40,8 +40,15 @@ data class MovieDto (
 
 ) : MediaContent
 
-data class GetMoviesRequestDto(
-    val category: MediaContentCategory,
-    val page: Int
+data class GetMovieVideosResponseDto(
+    val id: Int,
+    val results: List<VideoDto>
+)
+
+data class VideoDto(
+    val id: Int,
+    val name: String,
+    val key: String,
+    val site: String,
 )
 

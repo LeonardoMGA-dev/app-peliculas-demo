@@ -9,8 +9,10 @@ import com.example.app_entrevista_grupo_salinas.mediacontentdetail.SHOW_TYPE
 import com.example.data.business.movie.dto.MovieDto
 import com.example.data.cache.MoviesCache
 import com.example.data.di.Local
+import com.example.data.di.Remote
 import com.example.data.dto.MediaContent
 import com.example.domain.movie.usecase.GetMovieByIdUseCase
+import com.example.domain.movie.usecase.GetMovieVideosUseCase
 import com.example.domain.util.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,28 +21,33 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MediaContentDetailViewModel @Inject constructor(
-    @Local private val getMovieByIdUseCase: GetMovieByIdUseCase
+    @Local private val getMovieByIdUseCase: GetMovieByIdUseCase,
+    @Remote private val getMovieVideosUseCase: GetMovieVideosUseCase
 ) : ViewModel() {
 
     private val _mediaContentLiveData = MutableLiveData<MediaContent>()
     val mediaContentLiveData = _mediaContentLiveData as LiveData<MediaContent>
 
-
     fun getMedia(id: Int, mediaType: String) {
         viewModelScope.launch(Dispatchers.IO) {
             if (mediaType == MOVIE_TYPE) {
-                when (val result = getMovieByIdUseCase(id)) {
-                    is UseCaseResult.Success -> {
-                        _mediaContentLiveData.postValue(result.getData<MovieDto>())
-                    }
-                    is UseCaseResult.Error -> {
-
-                    }
-                }
+                getMovieData(id)
             } else {
 
             }
         }
+    }
+
+    private fun getMovieData(id: Int) {
+        when (val result = getMovieByIdUseCase(id)) {
+            is UseCaseResult.Success -> {
+                _mediaContentLiveData.postValue(result.getData<MovieDto>())
+            }
+            is UseCaseResult.Error -> {
+
+            }
+        }
+
     }
 
 

@@ -61,4 +61,18 @@ class RemoteMovieRepositoryImp @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override fun getVideos(movieId: Int): UseCaseResult {
+        try {
+            restService.getMovieVideos(movieId).execute().let { response ->
+                return if (response.isSuccessful) {
+                    UseCaseResult.Success(response.body()?.results)
+                } else {
+                    UseCaseResult.Error(response.code())
+                }
+            }
+        } catch (e: Exception) {
+            return UseCaseResult.Error(ErrorCodes.EXCEPTION_ON_REQUEST)
+        }
+    }
+
 }
