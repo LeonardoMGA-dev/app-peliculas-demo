@@ -17,7 +17,7 @@ class RemoteMovieRepositoryImp @Inject constructor(
         try {
             restService.getMostPopularMovies(page).execute().let { response ->
                 return if (response.isSuccessful) {
-                    UseCaseResult.Success(response.body())
+                    UseCaseResult.Success(response.body()?.results)
                 } else {
                     UseCaseResult.Error(response.code())
                 }

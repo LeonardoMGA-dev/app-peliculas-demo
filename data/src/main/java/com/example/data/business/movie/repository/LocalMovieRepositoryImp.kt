@@ -10,6 +10,7 @@ import com.example.data.utils.Constants
 import com.example.domain.movie.repository.MovieRepository
 import com.example.domain.util.UseCaseInput
 import com.example.domain.util.UseCaseResult
+import timber.log.Timber
 import javax.inject.Inject
 
 class LocalMovieRepositoryImp @Inject constructor(
@@ -19,11 +20,13 @@ class LocalMovieRepositoryImp @Inject constructor(
 
     override fun getMostPopularMovies(page: Int): UseCaseResult {
         return try {
-            val offset = page * Constants.QUERY_BATCH_SIZE
-            val limit = (page + 1) * Constants.QUERY_BATCH_SIZE
+            val offset = (page - 1)  * Constants.QUERY_BATCH_SIZE
+            val limit = (page) * Constants.QUERY_BATCH_SIZE
             val data = dbMovieDao.getMostPopularMovies(offset, limit)
+            Timber.i(data.size.toString())
             UseCaseResult.Success(data.map { it.toMovieDto() })
         } catch (e: Exception) {
+            e.printStackTrace()
             UseCaseResult.Error(ErrorCodes.EXCEPTION_ON_REQUEST)
         }
     }
@@ -48,8 +51,8 @@ class LocalMovieRepositoryImp @Inject constructor(
     override fun addMovie(useCaseInput: UseCaseInput): UseCaseResult {
         return try {
             val movieDto = useCaseInput.getData<MovieDto>()
-            val id = dbMovieDao.insertMovie(movieDto.toRoomEntity())
-            UseCaseResult.Success(id)
+            dbMovieDao.insertMovie(movieDto.toRoomEntity())
+            UseCaseResult.Success()
         } catch (e: Exception) {
             UseCaseResult.Error(ErrorCodes.EXCEPTION_ON_REQUEST)
         }

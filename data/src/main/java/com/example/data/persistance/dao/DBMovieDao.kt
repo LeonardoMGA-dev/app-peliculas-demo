@@ -9,7 +9,7 @@ import com.example.data.persistance.entity.MovieEntity
 @Dao
 interface DBMovieDao {
 
-    @Query("SELECT * FROM movie ORDER BY popularity LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM movie ORDER BY popularity DESC LIMIT :limit OFFSET :offset")
     fun getMostPopularMovies(offset: Int, limit: Int): List<MovieEntity>
 
     @Query("SELECT * FROM movie WHERE release_date_millis BETWEEN :minDateMillis AND :maxDateMillis LIMIT :limit OFFSET :offset")
@@ -23,6 +23,6 @@ interface DBMovieDao {
     @Query("SELECT * FROM movie WHERE id = :id LIMIT 1")
     fun getMovieById(id: Int): MovieEntity?
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovie(movieEntity: MovieEntity)
 }

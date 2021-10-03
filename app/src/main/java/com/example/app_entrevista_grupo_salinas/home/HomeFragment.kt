@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.app_entrevista_grupo_salinas.MainNavigation
 import com.example.app_entrevista_grupo_salinas.databinding.FragmentHomeBinding
 import com.example.app_entrevista_grupo_salinas.home.recyclerview.MediaContentAdapter
-import com.example.app_entrevista_grupo_salinas.home.viewmodel.HomeViewModel
+import com.example.app_entrevista_grupo_salinas.home.viewmodel.HomeMoviesViewModel
 import com.example.data.dto.MediaContent
 import com.example.data.utils.MediaContentCategory
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +26,7 @@ class HomeFragment : Fragment() {
     private lateinit var mostPopularShowsAdapter: MediaContentAdapter
     private lateinit var nowPlayingShowsAdapter: MediaContentAdapter
     private lateinit var mainNavigation: MainNavigation
-    private val homeViewModel: HomeViewModel by viewModels()
+    private val homeMoviesViewModel: HomeMoviesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +48,7 @@ class HomeFragment : Fragment() {
         nowPlayingMoviesAdapter = setupRecyclerview(binding.playingNowMoviesRecyclerView)
         mostPopularShowsAdapter = setupRecyclerview(binding.mostPopularShowsRecyclerView)
         nowPlayingShowsAdapter = setupRecyclerview(binding.playingNowShowsRecyclerView)
+        homeMoviesViewModel.getMovies()
     }
 
     private val onClickMediaContent: (MediaContent) -> Unit = { mediaContent ->
@@ -63,13 +64,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupViewModels() {
-        homeViewModel.mediaContentLiveData.observe(
+        homeMoviesViewModel.mediaContentLiveData.observe(
             viewLifecycleOwner,
             contentMediaObserver
         )
     }
 
-    private val contentMediaObserver = Observer<HomeViewModel.MediaContentResult> { result ->
+    private val contentMediaObserver = Observer<HomeMoviesViewModel.MediaContentResult> { result ->
         when (result.mediaCategory) {
             MediaContentCategory.MOST_POPULAR_MOVIES -> {
                 mostPopularMoviesAdapter.setItems(result.mediaContent)
