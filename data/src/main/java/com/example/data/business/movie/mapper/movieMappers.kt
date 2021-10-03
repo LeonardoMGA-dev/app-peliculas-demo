@@ -14,7 +14,7 @@ fun MovieDto.toRoomEntity(): MovieEntity {
         backdropPath = backdropPath,
         overview = overview,
         releaseDate = releaseDate,
-        releaseDateMillis = getMillisFromStringDate(releaseDate, "yyyy-mm-dd")
+        releaseDateMillis = getMillisFromStringDate(releaseDate, "yyyy-MM-dd")
     )
 }
 

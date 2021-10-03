@@ -79,8 +79,11 @@ object DataDIProvider {
 
     @Provides
     @Remote
-    fun providesRemoteGetMostPopularMoviesUseCase(restService: RestService): GetMostPopularMoviesUseCase {
-        return GetMostPopularMoviesUseCase(RemoteMovieRepositoryImp(restService))
+    fun providesRemoteGetMostPopularMoviesUseCase(
+        restService: RestService,
+        appPreferences: AppPreferences
+    ): GetMostPopularMoviesUseCase {
+        return GetMostPopularMoviesUseCase(RemoteMovieRepositoryImp(restService, appPreferences))
     }
 
     @Provides
@@ -94,8 +97,11 @@ object DataDIProvider {
 
     @Provides
     @Remote
-    fun providesRemoteGetNowPlayingMoviesUseCase(restService: RestService): GetNowPlayingMoviesUseCase {
-        return GetNowPlayingMoviesUseCase(RemoteMovieRepositoryImp(restService))
+    fun providesRemoteGetNowPlayingMoviesUseCase(
+        restService: RestService,
+        appPreferences: AppPreferences
+    ): GetNowPlayingMoviesUseCase {
+        return GetNowPlayingMoviesUseCase(RemoteMovieRepositoryImp(restService, appPreferences))
     }
 
     @Provides

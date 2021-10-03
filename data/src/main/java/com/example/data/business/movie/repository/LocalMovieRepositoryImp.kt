@@ -23,7 +23,6 @@ class LocalMovieRepositoryImp @Inject constructor(
             val offset = (page - 1)  * Constants.QUERY_BATCH_SIZE
             val limit = (page) * Constants.QUERY_BATCH_SIZE
             val data = dbMovieDao.getMostPopularMovies(offset, limit)
-            Timber.i(data.size.toString())
             UseCaseResult.Success(data.map { it.toMovieDto() })
         } catch (e: Exception) {
             e.printStackTrace()
@@ -33,14 +32,17 @@ class LocalMovieRepositoryImp @Inject constructor(
 
     override fun getNowPlayingMovies(page: Int): UseCaseResult {
         return try {
-            val offset = page * Constants.QUERY_BATCH_SIZE
-            val limit = (page + 1) * Constants.QUERY_BATCH_SIZE
+            val offset = (page - 1) * Constants.QUERY_BATCH_SIZE
+            val limit = page * Constants.QUERY_BATCH_SIZE
+            Timber.i(appPreferences.minimumRequestDate.toString() + " data")
+            Timber.i(appPreferences.maximumRequestDate.toString() + " data")
             dbMovieDao.getNowPlayingMovies(
                 offset,
                 limit,
                 appPreferences.minimumRequestDate,
                 appPreferences.maximumRequestDate
             ).let { result ->
+                Timber.i(result.size.toString())
                 UseCaseResult.Success(result.map { it.toMovieDto() })
             }
         } catch (e: Exception) {

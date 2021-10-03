@@ -80,13 +80,49 @@ class HomeMoviesViewModel @Inject constructor(
     }
 
     @WorkerThread
-    private fun getNowPlayingMovies() {
+    private suspend fun getRemoteNowPlayingMovies() {
+        remoteGetNowPlayingMoviesUseCase().let { useCaseResult ->
+            when (useCaseResult) {
+                is UseCaseResult.Success -> {
+                    val movies = useCaseResult.getData<List<MovieDto>>()
+                    withContext(Dispatchers.Main.immediate) {
+                        _mediaContentLiveData.value =
+                            MediaContentResult(movies, MediaContentCategory.NOW_PLAYING_MOVIES)
+                    }
+                    movies.forEach { movieDto ->
+                        localAddMovieUseCase(UseCaseInput(movieDto))
+                    }
+                }
+                is UseCaseResult.Error -> {
+                }
+            }
+        }
+    }
 
+    @WorkerThread
+    private suspend fun getLocalNowPlayingMovies() {
+        when(val result = localGetNowPlayingMoviesUseCase()) {
+            is UseCaseResult.Success -> {
+                val movies = result.getData<List<MovieDto>>()
+                if(movies.isEmpty()){
+                    getRemoteNowPlayingMovies()
+                }else {
+                    withContext(Dispatchers.Main.immediate) {
+                        _mediaContentLiveData.value =
+                            MediaContentResult(movies, MediaContentCategory.NOW_PLAYING_MOVIES)
+                    }
+                }
+            }
+            is UseCaseResult.Error -> {
+                getRemoteNowPlayingMovies()
+            }
+        }
     }
 
     fun getMovies() {
         viewModelScope.launch(Dispatchers.IO) {
             getLocalMostPopularMovies()
+            getLocalNowPlayingMovies()
         }
     }
 

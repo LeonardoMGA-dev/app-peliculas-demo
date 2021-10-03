@@ -8,7 +8,7 @@ class AppPreferences @Inject constructor(private val sharedPreferences: SharedPr
 
     companion object {
         const val MINIMUM_DATE_KEY = "minimum.request.key"
-        const val MAXIMUM_DATE_KEY = "minimum.request.app.key"
+        const val MAXIMUM_DATE_KEY = "maximum.request.key"
     }
 
     var minimumRequestDate: Long
