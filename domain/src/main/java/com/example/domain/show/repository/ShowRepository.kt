@@ -4,6 +4,6 @@ import com.example.domain.util.UseCaseInput
 import com.example.domain.util.UseCaseResult
 
 interface ShowRepository {
-    fun getShows(useCaseInput: UseCaseInput): UseCaseResult
+    fun getMostPopularShows(page: Int = 1): UseCaseResult
     fun addShow(useCaseInput: UseCaseInput): UseCaseResult
 }

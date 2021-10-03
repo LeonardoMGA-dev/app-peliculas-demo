@@ -8,10 +8,10 @@ import com.example.domain.util.UseCaseResult
 
 class RemoteShowRepositoryImp(private val restService: RestService) : ShowRepository {
 
-    override fun getShows(useCaseInput: UseCaseInput): UseCaseResult {
-        val category = useCaseInput.getData<String>()
+
+    override fun getMostPopularShows(page: Int): UseCaseResult {
         try {
-            restService.getTVShows(category).execute().let { response ->
+            restService.getMostPopularShows(page).execute().let { response ->
                 return if (response.isSuccessful) {
                     UseCaseResult.Success(response.body())
                 } else {

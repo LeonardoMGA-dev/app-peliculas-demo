@@ -2,6 +2,7 @@ package com.example.data.business.movie.repository
 
 import com.example.data.errors.ErrorCodes
 import com.example.data.networking.RestService
+import com.example.data.persistance.dao.DBMovieDao
 import com.example.domain.movie.repository.MovieRepository
 import com.example.domain.util.UseCaseInput
 import com.example.domain.util.UseCaseResult
@@ -12,10 +13,9 @@ class RemoteMovieRepositoryImp @Inject constructor(
     private val restService: RestService
 ) : MovieRepository {
 
-    override fun getMovies(useCaseInput: UseCaseInput): UseCaseResult {
-        val movieCategory = useCaseInput.getData<String>()
+    override fun getMostPopularMovies(page: Int): UseCaseResult {
         try {
-            restService.getMovies(movieCategory).execute().let { response ->
+            restService.getMostPopularMovies(page).execute().let { response ->
                 return if (response.isSuccessful) {
                     UseCaseResult.Success(response.body())
                 } else {
@@ -23,7 +23,20 @@ class RemoteMovieRepositoryImp @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            Timber.i(e.message)
+            return UseCaseResult.Error(ErrorCodes.EXCEPTION_ON_REQUEST)
+        }
+    }
+
+    override fun getNowPlayingMovies(page: Int): UseCaseResult {
+        try {
+            restService.getNowPlayingMovies(page).execute().let { response ->
+                return if (response.isSuccessful) {
+                    UseCaseResult.Success(response.body())
+                } else {
+                    UseCaseResult.Error(response.code())
+                }
+            }
+        } catch (e: Exception) {
             return UseCaseResult.Error(ErrorCodes.EXCEPTION_ON_REQUEST)
         }
     }

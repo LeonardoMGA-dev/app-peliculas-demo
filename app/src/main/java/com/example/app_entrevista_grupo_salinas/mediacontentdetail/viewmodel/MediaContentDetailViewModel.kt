@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MediaContentDetailViewModel @Inject constructor(
-    private val moviesCache: MoviesCache
+
 ) : ViewModel() {
 
     private val _mediaContentLiveData = MutableLiveData<MediaContent>()
@@ -25,9 +25,7 @@ class MediaContentDetailViewModel @Inject constructor(
     fun getMedia(id: Int, mediaType: String){
         viewModelScope.launch(Dispatchers.IO){
             if(mediaType == MOVIE_TYPE) {
-                moviesCache.getById(id)?.also { media ->
-                    _mediaContentLiveData.postValue(media)
-                }
+
             } else {
 
             }

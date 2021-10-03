@@ -3,10 +3,7 @@ package com.example.data.utils
 object Constants {
 
     const val AUTH_HEADER = "Authorization"
-
-    const val POPULAR_CATEGORY = "popular"
-
-    const val NOW_PLAYING_CATEGORY = "now_playing"
-
+    const val QUERY_BATCH_SIZE = 50
+    const val APP_SHARED_PREFERENCE_NAME = "app.shared.prefs"
 
 }

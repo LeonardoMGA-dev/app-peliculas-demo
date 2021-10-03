@@ -1,15 +1,25 @@
 package com.example.data.di
 
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.room.Room
+import com.example.data.business.movie.repository.LocalMovieRepositoryImp
 import com.example.data.business.movie.repository.RemoteMovieRepositoryImp
 import com.example.data.business.show.repository.RemoteShowRepositoryImp
-import com.example.data.cache.MoviesCache
 import com.example.data.networking.AuthInterceptor
 import com.example.data.networking.RestService
-import com.example.domain.movie.usecase.GetMoviesUseCase
-import com.example.domain.show.usecase.GetShowsUseCase
+import com.example.data.persistance.AppPreferences
+import com.example.data.persistance.LocalDatabase
+import com.example.data.persistance.dao.DBMovieDao
+import com.example.data.utils.Constants.APP_SHARED_PREFERENCE_NAME
+import com.example.domain.movie.usecase.AddMovieUseCase
+import com.example.domain.movie.usecase.GetMostPopularMoviesUseCase
+import com.example.domain.movie.usecase.GetNowPlayingMoviesUseCase
+import com.example.domain.show.usecase.GetMostPopularShowsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -23,11 +33,9 @@ object DataDIProvider {
     @Provides
     @Singleton
     fun providesRetrofit(): Retrofit {
-
         val authInterceptor = OkHttpClient().newBuilder()
             .addInterceptor(AuthInterceptor())
             .build()
-
         return Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -43,18 +51,78 @@ object DataDIProvider {
 
     @Provides
     @Singleton
-    fun providesMoviesCache(): MoviesCache{
-        return MoviesCache()
+    fun provideAppSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences(APP_SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
     }
 
     @Provides
-    fun providesRemoteGetMoviesUseCase(restService: RestService): GetMoviesUseCase {
-        return GetMoviesUseCase(RemoteMovieRepositoryImp(restService))
+    @Singleton
+    fun provideAppPreferences(sharedPreferences: SharedPreferences): AppPreferences {
+        return AppPreferences(sharedPreferences)
     }
 
     @Provides
-    fun providesRemoteGetShowsUseCase(restService: RestService): GetShowsUseCase {
-        return GetShowsUseCase(RemoteShowRepositoryImp(restService))
+    @Singleton
+    fun provideLocalDatabase(@ApplicationContext appContext: Context): LocalDatabase {
+        return Room.databaseBuilder(appContext, LocalDatabase::class.java, "neflis_db")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+
+    // movies
+
+    @Provides
+    fun provideMovieDao(localDatabase: LocalDatabase): DBMovieDao {
+        return localDatabase.movieDao()
+    }
+
+    @Provides
+    @Remote
+    fun providesRemoteGetMostPopularMoviesUseCase(restService: RestService): GetMostPopularMoviesUseCase {
+        return GetMostPopularMoviesUseCase(RemoteMovieRepositoryImp(restService))
+    }
+
+    @Provides
+    @Local
+    fun providesLocalGetMostPopularMoviesUseCase(
+        dbMovieDao: DBMovieDao,
+        appPreferences: AppPreferences
+    ): GetMostPopularMoviesUseCase {
+        return GetMostPopularMoviesUseCase(LocalMovieRepositoryImp(dbMovieDao, appPreferences))
+    }
+
+    @Provides
+    @Remote
+    fun providesRemoteGetNowPlayingMoviesUseCase(restService: RestService): GetNowPlayingMoviesUseCase {
+        return GetNowPlayingMoviesUseCase(RemoteMovieRepositoryImp(restService))
+    }
+
+    @Provides
+    @Local
+    fun providesLocalGetNowPlayingMoviesUseCase(
+        dbMovieDao: DBMovieDao,
+        appPreferences: AppPreferences
+    ): GetNowPlayingMoviesUseCase {
+        return GetNowPlayingMoviesUseCase(LocalMovieRepositoryImp(dbMovieDao, appPreferences))
+    }
+
+    @Provides
+    @Local
+    fun providesLocalAddMoviesUseCase(
+        dbMovieDao: DBMovieDao,
+        appPreferences: AppPreferences
+    ): AddMovieUseCase {
+        return AddMovieUseCase(LocalMovieRepositoryImp(dbMovieDao, appPreferences))
+    }
+
+
+    // show
+
+    @Provides
+    @Remote
+    fun providesGetMostPopularShowsUseCase(restService: RestService): GetMostPopularShowsUseCase {
+        return GetMostPopularShowsUseCase(RemoteShowRepositoryImp(restService))
     }
 
 }

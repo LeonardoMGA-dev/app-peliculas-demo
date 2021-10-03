@@ -1,6 +1,7 @@
 package com.example.app_entrevista_grupo_salinas.mediacontentdetail
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,13 +53,14 @@ class MediaContentDetailFragment : Fragment() {
             viewLifecycleOwner,
             mediaContentObserver
         )
+        binding.mediaContentDetailOverviewText.movementMethod = ScrollingMovementMethod()
     }
 
     private val mediaContentObserver = Observer<MediaContent> { media ->
         when (media) {
             is MovieDto -> {
                 Glide.with(this)
-                    .load("https://image.tmdb.org/t/p/w500${media.backdrop_path}")
+                    .load("https://image.tmdb.org/t/p/w500${media.backdropPath}")
                     .into(binding.mediaContentDetailImageView)
                 binding.mediaContentDetailTitle.text = media.title
                 binding.mediaContentDetailOverviewText.text = media.overview

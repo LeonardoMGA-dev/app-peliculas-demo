@@ -5,10 +5,8 @@ import com.example.domain.util.UseCaseInput
 import com.example.domain.util.UseCaseResult
 import javax.inject.Inject
 
-class GetMoviesUseCase @Inject constructor(private val movieRepository: MovieRepository) {
-
+class AddMovieUseCase @Inject constructor(private val movieRepository: MovieRepository) {
     operator fun invoke(useCaseInput: UseCaseInput): UseCaseResult {
-        return movieRepository.getMovies(useCaseInput)
+        return movieRepository.addMovie(useCaseInput)
     }
-
 }

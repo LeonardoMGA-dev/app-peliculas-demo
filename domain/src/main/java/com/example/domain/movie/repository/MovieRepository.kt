@@ -4,6 +4,7 @@ import com.example.domain.util.UseCaseInput
 import com.example.domain.util.UseCaseResult
 
 interface MovieRepository {
-    fun getMovies(useCaseInput: UseCaseInput): UseCaseResult
+    fun getMostPopularMovies(page: Int = 1): UseCaseResult
+    fun getNowPlayingMovies(page: Int = 1): UseCaseResult
     fun addMovie(useCaseInput: UseCaseInput): UseCaseResult
 }

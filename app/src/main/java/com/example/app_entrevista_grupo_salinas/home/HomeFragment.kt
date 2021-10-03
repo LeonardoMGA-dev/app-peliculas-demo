@@ -44,7 +44,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupView() {
-        homeViewModel.getMediaContent()
         mostPopularMoviesAdapter = setupRecyclerview(binding.mostPopularMoviesRecyclerView)
         nowPlayingMoviesAdapter = setupRecyclerview(binding.playingNowMoviesRecyclerView)
         mostPopularShowsAdapter = setupRecyclerview(binding.mostPopularShowsRecyclerView)
