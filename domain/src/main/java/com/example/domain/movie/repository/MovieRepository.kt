@@ -7,4 +7,5 @@ interface MovieRepository {
     fun getMostPopularMovies(page: Int = 1): UseCaseResult
     fun getNowPlayingMovies(page: Int = 1): UseCaseResult
     fun addMovie(useCaseInput: UseCaseInput): UseCaseResult
+    fun getMovieById(id: Int): UseCaseResult
 }

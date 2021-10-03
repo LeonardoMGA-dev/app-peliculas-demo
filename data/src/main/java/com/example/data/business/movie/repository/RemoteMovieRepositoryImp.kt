@@ -57,4 +57,8 @@ class RemoteMovieRepositoryImp @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override fun getMovieById(id: Int): UseCaseResult {
+        TODO("Not yet implemented")
+    }
+
 }

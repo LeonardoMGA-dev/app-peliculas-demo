@@ -14,6 +14,7 @@ import com.example.data.persistance.dao.DBMovieDao
 import com.example.data.utils.Constants.APP_SHARED_PREFERENCE_NAME
 import com.example.domain.movie.usecase.AddMovieUseCase
 import com.example.domain.movie.usecase.GetMostPopularMoviesUseCase
+import com.example.domain.movie.usecase.GetMovieByIdUseCase
 import com.example.domain.movie.usecase.GetNowPlayingMoviesUseCase
 import com.example.domain.show.usecase.GetMostPopularShowsUseCase
 import dagger.Module
@@ -122,6 +123,14 @@ object DataDIProvider {
         return AddMovieUseCase(LocalMovieRepositoryImp(dbMovieDao, appPreferences))
     }
 
+    @Provides
+    @Local
+    fun providesGetMovieByIdUseCase(
+        dbMovieDao: DBMovieDao,
+        appPreferences: AppPreferences
+    ): GetMovieByIdUseCase {
+        return GetMovieByIdUseCase(LocalMovieRepositoryImp(dbMovieDao, appPreferences))
+    }
 
     // show
 

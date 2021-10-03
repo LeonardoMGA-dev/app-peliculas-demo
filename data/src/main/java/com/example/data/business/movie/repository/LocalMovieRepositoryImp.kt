@@ -61,4 +61,17 @@ class LocalMovieRepositoryImp @Inject constructor(
 
     }
 
+    override fun getMovieById(id: Int): UseCaseResult {
+        return try {
+            val movieEntity = dbMovieDao.getMovieById(id)
+            return if(movieEntity != null){
+                UseCaseResult.Success(movieEntity.toMovieDto())
+            } else {
+                UseCaseResult.Error(ErrorCodes.NOT_FOUND)
+            }
+        } catch (e: Exception) {
+            UseCaseResult.Error(ErrorCodes.EXCEPTION_ON_REQUEST)
+        }
+    }
+
 }
