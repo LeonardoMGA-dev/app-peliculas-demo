@@ -4,19 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.app_entrevista_grupo_salinas.mediacontentdetail.MOVIE_TYPE
-import com.example.app_entrevista_grupo_salinas.mediacontentdetail.SHOW_TYPE
 import com.example.data.business.movie.dto.MovieDto
-import com.example.data.cache.MoviesCache
+import com.example.data.business.movie.dto.VideoDto
 import com.example.data.di.Local
 import com.example.data.di.Remote
-import com.example.data.dto.MediaContent
 import com.example.domain.movie.usecase.GetMovieByIdUseCase
 import com.example.domain.movie.usecase.GetMovieVideosUseCase
 import com.example.domain.util.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,29 +24,34 @@ class MediaContentDetailViewModel @Inject constructor(
     @Remote private val getMovieVideosUseCase: GetMovieVideosUseCase
 ) : ViewModel() {
 
-    private val _mediaContentLiveData = MutableLiveData<MediaContent>()
-    val mediaContentLiveData = _mediaContentLiveData as LiveData<MediaContent>
+    private val _movieLiveData = MutableLiveData<MovieDto>()
+    val movieLiveData = _movieLiveData as LiveData<MovieDto>
 
-    fun getMedia(id: Int, mediaType: String) {
+    private val _videosLiveData = MutableLiveData<List<VideoDto>>()
+    val videosLiveData = _videosLiveData as LiveData<List<VideoDto>>
+
+    fun getMovie(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (mediaType == MOVIE_TYPE) {
-                getMovieData(id)
-            } else {
-
+            when (val result = getMovieByIdUseCase(id)) {
+                is UseCaseResult.Success -> {
+                    _movieLiveData.postValue(result.getData<MovieDto>())
+                    getVideos(id)
+                }
+                is UseCaseResult.Error -> {
+                }
             }
         }
     }
 
-    private fun getMovieData(id: Int) {
-        when (val result = getMovieByIdUseCase(id)) {
+    private suspend fun getVideos(movieId: Int) = withContext(Dispatchers.IO){
+        when (val result = getMovieVideosUseCase(movieId)) {
             is UseCaseResult.Success -> {
-                _mediaContentLiveData.postValue(result.getData<MovieDto>())
+                _videosLiveData.postValue(result.getData<List<VideoDto>>())
             }
             is UseCaseResult.Error -> {
-
+                Timber.e(result.errorCode.toString())
             }
         }
-
     }
 
 

@@ -8,6 +8,7 @@ import com.example.data.utils.getMillisFromStringDate
 import com.example.domain.movie.repository.MovieRepository
 import com.example.domain.util.UseCaseInput
 import com.example.domain.util.UseCaseResult
+import timber.log.Timber
 import javax.inject.Inject
 
 class RemoteMovieRepositoryImp @Inject constructor(
@@ -63,7 +64,7 @@ class RemoteMovieRepositoryImp @Inject constructor(
 
     override fun getVideos(movieId: Int): UseCaseResult {
         try {
-            restService.getMovieVideos(movieId).execute().let { response ->
+            restService.getMovieVideos(movieId.toString()).execute().let { response ->
                 return if (response.isSuccessful) {
                     UseCaseResult.Success(response.body()?.results)
                 } else {
@@ -71,6 +72,8 @@ class RemoteMovieRepositoryImp @Inject constructor(
                 }
             }
         } catch (e: Exception) {
+            Timber.e(e.message)
+            e.printStackTrace()
             return UseCaseResult.Error(ErrorCodes.EXCEPTION_ON_REQUEST)
         }
     }

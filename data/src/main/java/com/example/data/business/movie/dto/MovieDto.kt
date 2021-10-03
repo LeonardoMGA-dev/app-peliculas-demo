@@ -38,7 +38,7 @@ data class MovieDto (
 
     val overview: String
 
-) : MediaContent
+)
 
 data class GetMovieVideosResponseDto(
     val id: Int,
@@ -46,7 +46,7 @@ data class GetMovieVideosResponseDto(
 )
 
 data class VideoDto(
-    val id: Int,
+    val id: String,
     val name: String,
     val key: String,
     val site: String,

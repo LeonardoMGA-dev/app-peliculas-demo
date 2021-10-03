@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_entrevista_grupo_salinas.MainNavigation
 import com.example.app_entrevista_grupo_salinas.databinding.FragmentHomeBinding
 import com.example.app_entrevista_grupo_salinas.home.recyclerview.MediaContentAdapter
-import com.example.app_entrevista_grupo_salinas.home.viewmodel.HomeMoviesViewModel
-import com.example.data.dto.MediaContent
+import com.example.app_entrevista_grupo_salinas.home.viewmodel.HomeViewModel
+import com.example.app_entrevista_grupo_salinas.utils.Constants
+import com.example.app_entrevista_grupo_salinas.utils.ImageGallery
+import com.example.data.business.movie.dto.MovieDto
 import com.example.data.utils.MediaContentCategory
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,10 +26,9 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var mostPopularMoviesAdapter: MediaContentAdapter
     private lateinit var nowPlayingMoviesAdapter: MediaContentAdapter
-    private lateinit var mostPopularShowsAdapter: MediaContentAdapter
-    private lateinit var nowPlayingShowsAdapter: MediaContentAdapter
     private lateinit var mainNavigation: MainNavigation
-    private val homeMoviesViewModel: HomeMoviesViewModel by viewModels()
+    private lateinit var imageGallery: ImageGallery
+    private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +41,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainNavigation = activity as MainNavigation
+        imageGallery = ImageGallery(binding.homeGallery, view)
         setupView()
         setupViewModels()
     }
@@ -46,13 +49,11 @@ class HomeFragment : Fragment() {
     private fun setupView() {
         mostPopularMoviesAdapter = setupRecyclerview(binding.mostPopularMoviesRecyclerView)
         nowPlayingMoviesAdapter = setupRecyclerview(binding.playingNowMoviesRecyclerView)
-        mostPopularShowsAdapter = setupRecyclerview(binding.mostPopularShowsRecyclerView)
-        nowPlayingShowsAdapter = setupRecyclerview(binding.playingNowShowsRecyclerView)
-        homeMoviesViewModel.getMovies()
+        homeViewModel.getMovies()
     }
 
-    private val onClickMediaContent: (MediaContent) -> Unit = { mediaContent ->
-        mainNavigation.launchMediaContentDetailFragment(mediaContent)
+    private val onClickMediaContent: (MovieDto) -> Unit = { movie ->
+        mainNavigation.launchMediaContentDetailFragment(movie)
     }
 
     private fun setupRecyclerview(recyclerView: RecyclerView): MediaContentAdapter {
@@ -64,25 +65,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupViewModels() {
-        homeMoviesViewModel.mediaContentLiveData.observe(
+        homeViewModel.mediaContentLiveData.observe(
             viewLifecycleOwner,
             contentMediaObserver
         )
     }
 
-    private val contentMediaObserver = Observer<HomeMoviesViewModel.MediaContentResult> { result ->
+    private val contentMediaObserver = Observer<HomeViewModel.MediaContentResult> { result ->
         when (result.mediaCategory) {
             MediaContentCategory.MOST_POPULAR_MOVIES -> {
-                mostPopularMoviesAdapter.setItems(result.mediaContent)
+                val movies = result.movies
+                mostPopularMoviesAdapter.setItems(movies)
+                imageGallery.setImages(movies.map { "${Constants.BASE_IMAGE_API_URL}${it.backdropPath}" })
+                imageGallery.start(lifecycleScope, 10000)
             }
             MediaContentCategory.NOW_PLAYING_MOVIES -> {
-                nowPlayingMoviesAdapter.setItems(result.mediaContent)
-            }
-            MediaContentCategory.MOST_POPULAR_SHOWS -> {
-                mostPopularShowsAdapter.setItems(result.mediaContent)
-            }
-            MediaContentCategory.ON_THE_AIR_SHOWS -> {
-                nowPlayingShowsAdapter.setItems(result.mediaContent)
+                nowPlayingMoviesAdapter.setItems(result.movies)
             }
         }
     }

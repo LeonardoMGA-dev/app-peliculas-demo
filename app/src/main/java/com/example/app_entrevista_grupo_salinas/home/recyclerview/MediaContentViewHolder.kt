@@ -3,31 +3,23 @@ package com.example.app_entrevista_grupo_salinas.home.recyclerview
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.app_entrevista_grupo_salinas.databinding.MediaContentItemBinding
-import com.example.data.dto.MediaContent
+import com.example.app_entrevista_grupo_salinas.utils.Constants
 import com.example.data.business.movie.dto.MovieDto
-import com.example.data.business.show.dto.ShowDto
 
 class MediaContentViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = MediaContentItemBinding.bind(view)
 
-    fun bind(mediaContent: MediaContent, onClick: (MediaContent) -> Unit ) {
+    fun bind(mediaContent: MovieDto, onClick: (MovieDto) -> Unit) {
         binding.mediaContentItemImageView.setOnClickListener {
             onClick(mediaContent)
         }
-        when (mediaContent) {
-            is MovieDto -> {
-                Glide.with(view)
-                    .load("https://image.tmdb.org/t/p/w500${mediaContent.posterPath}")
-                    .into(binding.mediaContentItemImageView)
-            }
-            is ShowDto -> {
-                Glide.with(view)
-                    .load("https://image.tmdb.org/t/p/w500${mediaContent.posterPath}")
-                    .into(binding.mediaContentItemImageView)
-            }
-        }
+        Glide.with(view)
+            .load("${Constants.BASE_IMAGE_API_URL}${mediaContent.posterPath}")
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(binding.mediaContentItemImageView)
     }
 
 }

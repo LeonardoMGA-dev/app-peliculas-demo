@@ -24,7 +24,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeMoviesViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     @Remote private val remoteGetMostPopularMoviesUseCase: GetMostPopularMoviesUseCase,
     @Remote private val remoteGetNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
     @Local private val localGetMostPopularMoviesUseCase: GetMostPopularMoviesUseCase,
@@ -33,7 +33,7 @@ class HomeMoviesViewModel @Inject constructor(
 ) : ViewModel() {
 
     data class MediaContentResult(
-        val mediaContent: List<MediaContent>,
+        val movies: List<MovieDto>,
         val mediaCategory: MediaContentCategory
     )
 

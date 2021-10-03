@@ -7,6 +7,7 @@ import androidx.fragment.app.commit
 import com.example.app_entrevista_grupo_salinas.databinding.ActivityMainBinding
 import com.example.app_entrevista_grupo_salinas.home.HomeFragment
 import com.example.app_entrevista_grupo_salinas.mediacontentdetail.MediaContentDetailFragment
+import com.example.data.business.movie.dto.MovieDto
 import com.example.data.dto.MediaContent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity(), MainNavigation {
         TODO("Not yet implemented")
     }
 
-    override fun launchMediaContentDetailFragment(mediaContent: MediaContent) {
+    override fun launchMediaContentDetailFragment(movieDto: MovieDto) {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             addToBackStack(null)
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity(), MainNavigation {
                 R.anim.slide_in_right,
                 R.anim.slide_out_right
             )
-            add(R.id.main_container_view, MediaContentDetailFragment.newInstance(mediaContent))
+            add(R.id.main_container_view, MediaContentDetailFragment.newInstance(movieDto))
         }
     }
 

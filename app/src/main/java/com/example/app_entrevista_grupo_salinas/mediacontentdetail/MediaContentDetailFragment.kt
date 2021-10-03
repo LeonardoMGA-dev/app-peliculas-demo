@@ -1,25 +1,29 @@
 package com.example.app_entrevista_grupo_salinas.mediacontentdetail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.app_entrevista_grupo_salinas.databinding.FragmentMediaContentDetailBinding
+import com.example.app_entrevista_grupo_salinas.mediacontentdetail.recyclerview.VideoAdapter
 import com.example.app_entrevista_grupo_salinas.mediacontentdetail.viewmodel.MediaContentDetailViewModel
+import com.example.app_entrevista_grupo_salinas.utils.Constants
 import com.example.data.business.movie.dto.MovieDto
-import com.example.data.business.show.dto.ShowDto
-import com.example.data.dto.MediaContent
+import com.example.data.business.movie.dto.VideoDto
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
-private const val ARG_MEDIA_CATEGORY = "media_category"
+
 private const val ARG_MEDIA_ID = "media_id"
-const val MOVIE_TYPE = "movie"
-const val SHOW_TYPE = "show"
 
 @AndroidEntryPoint
 class MediaContentDetailFragment : Fragment() {
@@ -27,6 +31,7 @@ class MediaContentDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentMediaContentDetailBinding
     private val mediaContentDetailViewModel: MediaContentDetailViewModel by viewModels()
+    private lateinit var videosAdapter: VideoAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,49 +44,68 @@ class MediaContentDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewModels()
-
         arguments?.let {
-            mediaContentDetailViewModel.getMedia(
+            mediaContentDetailViewModel.getMovie(
                 it.getInt(ARG_MEDIA_ID),
-                it.getString(ARG_MEDIA_CATEGORY) ?: ""
             )
+        }
+        setupViews()
+
+    }
+
+    private fun setupViews(){
+        videosAdapter =  setupRecyclerview(binding.videosRecyclerViews)
+        binding.mediaContentDetailOverviewText.movementMethod = ScrollingMovementMethod()
+    }
+
+    private val onClickVideo: (VideoDto) -> Unit = { video ->
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setPackage("com.google.android.youtube")
+        intent.data = Uri.parse("${Constants.BASE_YOUTUBE_URL}${video.key}")
+        startActivity(intent)
+    }
+
+
+    private fun setupRecyclerview(recyclerView: RecyclerView): VideoAdapter {
+        recyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        return VideoAdapter(onClickVideo).apply {
+            recyclerView.adapter = this
         }
     }
 
     private fun setupViewModels() {
-        mediaContentDetailViewModel.mediaContentLiveData.observe(
+        mediaContentDetailViewModel.movieLiveData.observe(
             viewLifecycleOwner,
             mediaContentObserver
         )
-        binding.mediaContentDetailOverviewText.movementMethod = ScrollingMovementMethod()
+        mediaContentDetailViewModel.videosLiveData.observe(
+            viewLifecycleOwner,
+            videosObserver
+        )
+
     }
 
-    private val mediaContentObserver = Observer<MediaContent> { media ->
-        when (media) {
-            is MovieDto -> {
-                Glide.with(this)
-                    .load("https://image.tmdb.org/t/p/w500${media.backdropPath}")
-                    .into(binding.mediaContentDetailImageView)
-                binding.mediaContentDetailTitle.text = media.title
-                binding.mediaContentDetailOverviewText.text = media.overview
-            }
-        }
+    private val mediaContentObserver = Observer<MovieDto> { movieDto ->
+        Glide.with(this)
+            .load("${Constants.BASE_IMAGE_API_URL}${movieDto.backdropPath}")
+            .into(binding.mediaContentDetailImageView)
+        binding.mediaContentDetailTitle.text = movieDto.title
+        binding.mediaContentDetailOverviewText.text = movieDto.overview
+        binding.releaseDateText.text = movieDto.releaseDate
+        binding.voteAverageText.text = movieDto.voteAverage.toString()
+    }
+
+    private val videosObserver = Observer<List<VideoDto>> { videos ->
+        Timber.i(videos.size.toString())
+        videosAdapter.setItems(videos)
     }
 
     companion object {
-        fun newInstance(mediaContent: MediaContent) =
+        fun newInstance(movieDto: MovieDto) =
             MediaContentDetailFragment().apply {
                 arguments = Bundle().apply {
-                    when (mediaContent) {
-                        is MovieDto -> {
-                            putInt(ARG_MEDIA_ID, mediaContent.id)
-                            putString(ARG_MEDIA_CATEGORY, MOVIE_TYPE)
-                        }
-                        is ShowDto -> {
-                            putInt(ARG_MEDIA_ID, mediaContent.id)
-                            putString(ARG_MEDIA_CATEGORY, SHOW_TYPE)
-                        }
-                    }
+                    putInt(ARG_MEDIA_ID, movieDto.id)
                 }
             }
     }

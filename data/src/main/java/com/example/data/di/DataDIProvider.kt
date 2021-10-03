@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.data.business.movie.repository.LocalMovieRepositoryImp
 import com.example.data.business.movie.repository.RemoteMovieRepositoryImp
-import com.example.data.business.show.repository.RemoteShowRepositoryImp
 import com.example.data.networking.AuthInterceptor
 import com.example.data.networking.RestService
 import com.example.data.persistance.AppPreferences
@@ -13,7 +12,6 @@ import com.example.data.persistance.LocalDatabase
 import com.example.data.persistance.dao.DBMovieDao
 import com.example.data.utils.Constants.APP_SHARED_PREFERENCE_NAME
 import com.example.domain.movie.usecase.*
-import com.example.domain.show.usecase.GetMostPopularShowsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -133,18 +131,10 @@ object DataDIProvider {
     @Provides
     @Remote
     fun providesGetMovieVideosUseCase(
-        dbMovieDao: DBMovieDao,
+        restService: RestService,
         appPreferences: AppPreferences
     ): GetMovieVideosUseCase {
-        return GetMovieVideosUseCase(LocalMovieRepositoryImp(dbMovieDao, appPreferences))
-    }
-
-    // show
-
-    @Provides
-    @Remote
-    fun providesGetMostPopularShowsUseCase(restService: RestService): GetMostPopularShowsUseCase {
-        return GetMostPopularShowsUseCase(RemoteShowRepositoryImp(restService))
+        return GetMovieVideosUseCase(RemoteMovieRepositoryImp(restService, appPreferences))
     }
 
 }
