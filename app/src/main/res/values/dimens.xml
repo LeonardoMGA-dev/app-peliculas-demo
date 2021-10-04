@@ -4,6 +4,35 @@
     <dimen name="home_recycler_view_header_margin_top">30dp</dimen>
     <dimen name="home_recycler_view_margin_top">8dp</dimen>
     <dimen name="home_recycler_view_header_size">18sp</dimen>
+    <dimen name="home_gallery_height">180dp</dimen>
+    <dimen name="home_title_text_size">20sp</dimen>
+    <dimen name="home_title_margin">5dp</dimen>
+    <dimen name="home_most_popular_movies_title_margin_top">16dp</dimen>
+
     <dimen name="video_item_height">200dp</dimen>
     <dimen name="video_item_size">60dp</dimen>
+    <dimen name="video_item_image_view_margin_horizontal">10dp</dimen>
+
+    <dimen name="media_content_detail_icon_size">30dp</dimen>
+    <dimen name="media_content_detail_image_view_height">170dp</dimen>
+    <dimen name="media_content_detail_title_section_size">20sp</dimen>
+    <dimen name="media_content_detail_title_section_margin_top">5dp</dimen>
+    <dimen name="media_content_detail_title_margin_top">10dp</dimen>
+    <dimen name="media_content_detail_title_text_size">23sp</dimen>
+    <dimen name="media_content_detail_overview_margin_top">8dp</dimen>
+    <dimen name="media_content_detail_release_date_text_size">18sp</dimen>
+    <dimen name="media_content_detail_release_date_margin_left">10dp</dimen>
+    <dimen name="media_content_detail_release_date_margin_top">16dp</dimen>
+    <dimen name="media_content_detail_vote_average_margin_icon_left">16dp</dimen>
+    <dimen name="media_content_detail_vote_average_text_size">18sp</dimen>
+    <dimen name="media_content_detail_vote_average_margin_left">10dp</dimen>
+    <dimen name="media_content_detail_videos_header_text_margin_top">16dp</dimen>
+    <dimen name="media_content_detail_videos_header_text_size">18sp</dimen>
+    <dimen name="media_content_detail_recycler_view_videos_margin_top">10dp</dimen>
+
+    <dimen name="media_content_detail_recycler_view_videos_height">150dp</dimen>
+    <dimen name="media_content_item_width">130dp</dimen>
+    <dimen name="media_content_item_margin_horizontal">5dp</dimen>
+
+    <dimen name="app_common_text_size">16sp</dimen>
 </resources>

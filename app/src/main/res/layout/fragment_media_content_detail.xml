@@ -18,21 +18,22 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:scaleType="centerCrop"
-            android:layout_height="170dp"/>
+            android:layout_height="@dimen/media_content_detail_image_view_height"/>
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/media_content_detail_title_section"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="@dimen/media_content_detail_title_section_size"
             android:textStyle="bold"
-            android:text="Movie Detail"
+            android:text="@string/media_content_detail_title_section"
             app:layout_constraintTop_toTopOf="@id/media_content_detail_image_view"
             app:layout_constraintLeft_toLeftOf="@id/media_content_detail_image_view"
-            android:layout_margin="5dp"/>
+            android:layout_margin="@dimen/media_content_detail_title_section_margin_top"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/media_content_detail_title"
-            android:layout_marginTop="10sp"
-            android:textSize="23sp"
+            android:layout_marginTop="@dimen/media_content_detail_title_margin_top"
+            android:textSize="@dimen/media_content_detail_title_text_size"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,20 +43,21 @@
 
          <androidx.appcompat.widget.AppCompatTextView
              android:id="@+id/media_content_detail_overview_text"
-             android:layout_marginTop="8dp"
+             android:layout_marginTop="@dimen/media_content_detail_overview_margin_top"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:maxLines="7"
              android:scrollbars="vertical"
-             tools:text="overview text "
-             android:textSize="16sp"
+             tools:text="overview text demo"
+             android:textSize="@dimen/app_common_text_size"
              app:layout_constraintTop_toBottomOf="@id/media_content_detail_title"
              app:layout_constraintLeft_toLeftOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/release_date_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:tint="@color/white"
+            android:layout_width="@dimen/media_content_detail_icon_size"
+            android:layout_height="@dimen/media_content_detail_icon_size"
             android:src="@drawable/ic_baseline_calendar_today_24"
             app:layout_constraintTop_toTopOf="@id/release_date_text"
             app:layout_constraintBottom_toBottomOf="@id/release_date_text"
@@ -66,18 +68,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="2012-21-12"
-            android:textSize="18sp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="16dp"
+            android:textSize="@dimen/media_content_detail_release_date_text_size"
+            android:layout_marginLeft="@dimen/media_content_detail_release_date_margin_left"
+            android:layout_marginTop="@dimen/media_content_detail_release_date_margin_top"
             app:layout_constraintLeft_toRightOf="@id/release_date_icon"
             app:layout_constraintTop_toBottomOf="@id/media_content_detail_overview_text"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/vote_average_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:tint="@color/white"
+            android:layout_width="@dimen/media_content_detail_icon_size"
+            android:layout_height="@dimen/media_content_detail_icon_size"
             android:src="@drawable/ic_baseline_thumb_up_24"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="@dimen/media_content_detail_vote_average_margin_icon_left"
             app:layout_constraintTop_toTopOf="@id/release_date_text"
             app:layout_constraintBottom_toBottomOf="@id/release_date_text"
             app:layout_constraintLeft_toRightOf="@id/release_date_text"/>
@@ -87,9 +90,9 @@
             android:id="@+id/vote_average_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/media_content_detail_vote_average_text_size"
+            android:layout_marginLeft="@dimen/media_content_detail_vote_average_margin_left"
             tools:text="9.5"
-            android:textSize="18sp"
-            android:layout_marginLeft="10dp"
             app:layout_constraintLeft_toRightOf="@id/vote_average_icon"
             app:layout_constraintTop_toTopOf="@id/vote_average_icon"
             app:layout_constraintBottom_toBottomOf="@id/vote_average_icon"/>
@@ -98,19 +101,18 @@
             android:id="@+id/videos_header_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textSize="18sp"
+            android:layout_marginTop="@dimen/media_content_detail_videos_header_text_margin_top"
+            android:textSize="@dimen/media_content_detail_videos_header_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/release_date_icon"
-            android:text="Videos"/>
+            android:text="@string/media_content_detail_videos_title"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/videos_recycler_views"
             app:layout_constraintTop_toBottomOf="@id/videos_header_text"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/media_content_detail_recycler_view_videos_margin_top"
             android:layout_width="match_parent"
-            android:layout_height="150dp"/>
-
+            android:layout_height="@dimen/media_content_detail_recycler_view_videos_height"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

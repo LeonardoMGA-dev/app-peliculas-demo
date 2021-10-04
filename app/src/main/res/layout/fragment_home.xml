@@ -7,7 +7,6 @@
     android:fillViewport="true"
     tools:context=".home.HomeFragment">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,16 +15,17 @@
             android:id="@+id/home_gallery"
             android:layout_width="match_parent"
             tools:src="@drawable/ic_baseline_play_circle_outline_24"
-            android:layout_height="180dp"
+            android:layout_height="@dimen/home_gallery_height"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home"
+            android:text="@string/home_title"
             android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_margin="5dp"
+            android:textSize="@dimen/home_title_text_size"
+            android:layout_margin="@dimen/home_title_margin"
             app:layout_constraintLeft_toLeftOf="@id/home_gallery"
             app:layout_constraintTop_toTopOf="@id/home_gallery"/>
 
@@ -33,7 +33,7 @@
             android:id="@+id/most_popular_movies_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/home_most_popular_movies_title_margin_top"
             android:text="@string/home_most_popular_movies"
             android:textSize="@dimen/home_recycler_view_header_size"
             android:textStyle="bold"
