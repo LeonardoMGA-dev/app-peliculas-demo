@@ -9,7 +9,7 @@ y en local era complicado implementarlo en tan poco tiempo para rooms.
 Lo logré mitigar con una variable de apoyo en la entidad de rooms.
 
 Adicionalmente también tenía planeado el uso de Build variants para el caso de la api key 
-pero por el momento solo usé un archivo de constantes, pero si lo consideré. (la api key debe de ir en app/utils/constants)
+pero por el momento solo usé un archivo de constantes, pero si lo consideré. (la api key debe de ir en data/utils/constants)
 
 En resumen la app cuenta con: 
 
