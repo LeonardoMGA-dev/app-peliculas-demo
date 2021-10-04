@@ -14,6 +14,5 @@ class MovieEntity (
     @ColumnInfo(name = "backdrop_path") val backdropPath: String,
     @ColumnInfo(name = "release_date") val releaseDate: String,
     @ColumnInfo(name = "overview") val overview: String,
-    @ColumnInfo(name = "release_date_millis") val releaseDateMillis: Long //columna de apoyo para consulta
-
+    @ColumnInfo(name = "now_playing") val nowPlaying: Boolean
 )

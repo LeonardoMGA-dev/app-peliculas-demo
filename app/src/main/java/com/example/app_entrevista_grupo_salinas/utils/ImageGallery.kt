@@ -1,6 +1,5 @@
 package com.example.app_entrevista_grupo_salinas.utils
 
-import android.content.Context
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import com.bumptech.glide.Glide
@@ -16,22 +15,23 @@ class ImageGallery(private val appCompatImageView: AppCompatImageView, private v
         this.images.addAll(images)
     }
 
-    fun start(coroutineScope: CoroutineScope, delayTime: Long) {
+    fun start(coroutineScope: CoroutineScope, delayTime: Long, animationDuration: Int) {
         active = true
         coroutineScope.launch(Dispatchers.Main) {
-            val iterator = images.iterator()
+            var iterator = images.iterator()
             while (iterator.hasNext() && active && isActive) {
                 Glide.with(view)
                     .load(iterator.next())
-                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .transition(DrawableTransitionOptions.withCrossFade(animationDuration))
                     .centerCrop()
                     .into(appCompatImageView)
                 delay(delayTime)
+                if (!iterator.hasNext()) iterator = images.iterator()
             }
         }
     }
 
-    fun stop(){
+    fun stop() {
         active = false
     }
 

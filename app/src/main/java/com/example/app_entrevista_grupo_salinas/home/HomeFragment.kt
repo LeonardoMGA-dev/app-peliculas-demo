@@ -77,7 +77,7 @@ class HomeFragment : Fragment() {
                 val movies = result.movies
                 mostPopularMoviesAdapter.setItems(movies)
                 imageGallery.setImages(movies.map { "${Constants.BASE_IMAGE_API_URL}${it.backdropPath}" })
-                imageGallery.start(lifecycleScope, 10000)
+                imageGallery.start(lifecycleScope, 5000, 1000)
             }
             MediaContentCategory.NOW_PLAYING_MOVIES -> {
                 nowPlayingMoviesAdapter.setItems(result.movies)

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.business.movie.dto.MovieDto
+import com.example.data.business.movie.mapper.toRoomEntity
 import com.example.data.di.Local
 import com.example.data.di.Remote
 import com.example.data.dto.MediaContent
@@ -70,7 +71,7 @@ class HomeViewModel @Inject constructor(
                             MediaContentResult(movies, MediaContentCategory.MOST_POPULAR_MOVIES)
                     }
                     movies.forEach { movieDto ->
-                        localAddMovieUseCase(UseCaseInput(movieDto))
+                        localAddMovieUseCase(UseCaseInput(movieDto.toRoomEntity()))
                     }
                 }
                 is UseCaseResult.Error -> {
@@ -90,10 +91,11 @@ class HomeViewModel @Inject constructor(
                             MediaContentResult(movies, MediaContentCategory.NOW_PLAYING_MOVIES)
                     }
                     movies.forEach { movieDto ->
-                        localAddMovieUseCase(UseCaseInput(movieDto))
+                        localAddMovieUseCase(UseCaseInput(movieDto.toRoomEntity(true)))
                     }
                 }
                 is UseCaseResult.Error -> {
+
                 }
             }
         }

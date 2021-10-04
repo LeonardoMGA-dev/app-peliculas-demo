@@ -38,6 +38,7 @@ class MediaContentDetailViewModel @Inject constructor(
                     getVideos(id)
                 }
                 is UseCaseResult.Error -> {
+
                 }
             }
         }

@@ -4,7 +4,7 @@ import com.example.data.business.movie.dto.MovieDto
 import com.example.data.persistance.entity.MovieEntity
 import com.example.data.utils.getMillisFromStringDate
 
-fun MovieDto.toRoomEntity(): MovieEntity {
+fun MovieDto.toRoomEntity(nowPlaying: Boolean = false): MovieEntity {
     return MovieEntity(
         id = id,
         title = title,
@@ -14,7 +14,7 @@ fun MovieDto.toRoomEntity(): MovieEntity {
         backdropPath = backdropPath,
         overview = overview,
         releaseDate = releaseDate,
-        releaseDateMillis = getMillisFromStringDate(releaseDate, "yyyy-MM-dd")
+        nowPlaying = nowPlaying
     )
 }
 
