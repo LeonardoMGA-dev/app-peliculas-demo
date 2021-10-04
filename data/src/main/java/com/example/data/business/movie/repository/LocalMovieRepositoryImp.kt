@@ -1,8 +1,6 @@
 package com.example.data.business.movie.repository
 
-import com.example.data.business.movie.dto.MovieDto
 import com.example.data.business.movie.mapper.toMovieDto
-import com.example.data.business.movie.mapper.toRoomEntity
 import com.example.data.errors.ErrorCodes
 import com.example.data.persistance.dao.DBMovieDao
 import com.example.data.persistance.entity.MovieEntity

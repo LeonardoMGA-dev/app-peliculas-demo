@@ -22,6 +22,4 @@
         app:layout_constraintLeft_toLeftOf="@id/video_item_image_view"
         app:layout_constraintRight_toRightOf="@id/video_item_image_view"/>
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

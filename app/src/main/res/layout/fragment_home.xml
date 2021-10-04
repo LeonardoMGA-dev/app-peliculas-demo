@@ -1,69 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     tools:context=".home.HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/home_gallery"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            tools:src="@drawable/ic_baseline_play_circle_outline_24"
-            android:layout_height="@dimen/home_gallery_height"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/home_title"
-            android:textStyle="bold"
-            android:textSize="@dimen/home_title_text_size"
-            android:layout_margin="@dimen/home_title_margin"
-            app:layout_constraintLeft_toLeftOf="@id/home_gallery"
-            app:layout_constraintTop_toTopOf="@id/home_gallery"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/home_gallery"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_gallery_height"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_baseline_play_circle_outline_24" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/most_popular_movies_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/home_most_popular_movies_title_margin_top"
-            android:text="@string/home_most_popular_movies"
-            android:textSize="@dimen/home_recycler_view_header_size"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/home_gallery" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/home_title_margin"
+                android:text="@string/home_title"
+                android:textSize="@dimen/home_title_text_size"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="@id/home_gallery"
+                app:layout_constraintTop_toTopOf="@id/home_gallery" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/most_popular_movies_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/home_recycler_view_height"
-            android:layout_marginTop="@dimen/home_recycler_view_margin_top"
-            app:layout_constraintTop_toBottomOf="@id/most_popular_movies_title" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/most_popular_movies_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/home_most_popular_movies_title_margin_top"
+                android:text="@string/home_most_popular_movies"
+                android:textSize="@dimen/home_recycler_view_header_size"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/home_gallery" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/most_popular_movies_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_recycler_view_height"
+                android:layout_marginTop="@dimen/home_recycler_view_margin_top"
+                app:layout_constraintTop_toBottomOf="@id/most_popular_movies_title" />
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/playing_now_movies_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/home_recycler_view_header_margin_top"
-            android:text="@string/home_playing_now_movies"
-            android:textSize="@dimen/home_recycler_view_header_size"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/most_popular_movies_recycler_view" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/playing_now_movies_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/home_recycler_view_header_margin_top"
+                android:text="@string/home_playing_now_movies"
+                android:textSize="@dimen/home_recycler_view_header_size"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/most_popular_movies_recycler_view" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/playing_now_movies_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/home_recycler_view_height"
-            android:layout_marginTop="@dimen/home_recycler_view_margin_top"
-            app:layout_constraintTop_toBottomOf="@id/playing_now_movies_header" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playing_now_movies_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_recycler_view_height"
+                android:layout_marginTop="@dimen/home_recycler_view_margin_top"
+                app:layout_constraintTop_toBottomOf="@id/playing_now_movies_header" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

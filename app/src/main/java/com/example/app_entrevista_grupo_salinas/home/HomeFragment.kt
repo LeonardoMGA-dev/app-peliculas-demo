@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -49,6 +50,11 @@ class HomeFragment : Fragment() {
     private fun setupView() {
         mostPopularMoviesAdapter = setupRecyclerview(binding.mostPopularMoviesRecyclerView)
         nowPlayingMoviesAdapter = setupRecyclerview(binding.playingNowMoviesRecyclerView)
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            imageGallery.stop()
+            homeViewModel.getMoviesFromRemote()
+        }
+        binding.swipeRefreshLayout.setDistanceToTriggerSync(SWIPE_REFRESH_DISTANCE)
         homeViewModel.getMovies()
     }
 
@@ -69,15 +75,20 @@ class HomeFragment : Fragment() {
             viewLifecycleOwner,
             contentMediaObserver
         )
+        homeViewModel.errorLiveData.observe(
+            viewLifecycleOwner,
+            errorObserver
+        )
     }
 
     private val contentMediaObserver = Observer<HomeViewModel.MediaContentResult> { result ->
+        binding.swipeRefreshLayout.isRefreshing = false
         when (result.mediaCategory) {
             MediaContentCategory.MOST_POPULAR_MOVIES -> {
                 val movies = result.movies
                 mostPopularMoviesAdapter.setItems(movies)
                 imageGallery.setImages(movies.map { "${Constants.BASE_IMAGE_API_URL}${it.backdropPath}" })
-                imageGallery.start(lifecycleScope, 5000, 1000)
+                imageGallery.start(lifecycleScope, GALLERY_DELAY_TRANSITION_TIME, GALLERY_ANIMATION_DURATION)
             }
             MediaContentCategory.NOW_PLAYING_MOVIES -> {
                 nowPlayingMoviesAdapter.setItems(result.movies)
@@ -85,8 +96,13 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private val errorObserver = Observer<Int> { message ->
+        Toast.makeText(context, getString(message), Toast.LENGTH_SHORT).show()
+    }
 
     companion object {
-
+        private const val SWIPE_REFRESH_DISTANCE = 400
+        private const val GALLERY_DELAY_TRANSITION_TIME = 5000L
+        private const val GALLERY_ANIMATION_DURATION = 1000
     }
 }

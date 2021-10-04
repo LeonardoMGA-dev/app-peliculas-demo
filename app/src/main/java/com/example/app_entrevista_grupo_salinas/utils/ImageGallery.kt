@@ -9,17 +9,18 @@ import kotlinx.coroutines.*
 class ImageGallery(private val appCompatImageView: AppCompatImageView, private val view: View) {
 
     private val images = HashSet<String>()
-    private var active = false
+    private var galleryJob: Job? = null
 
     fun setImages(images: List<String>) {
+        this.images.clear()
         this.images.addAll(images)
     }
 
     fun start(coroutineScope: CoroutineScope, delayTime: Long, animationDuration: Int) {
-        active = true
-        coroutineScope.launch(Dispatchers.Main) {
+        galleryJob?.apply { cancel() }
+        galleryJob = coroutineScope.launch(Dispatchers.Main) {
             var iterator = images.iterator()
-            while (iterator.hasNext() && active && isActive) {
+            while (iterator.hasNext() && isActive) {
                 Glide.with(view)
                     .load(iterator.next())
                     .transition(DrawableTransitionOptions.withCrossFade(animationDuration))
@@ -32,7 +33,7 @@ class ImageGallery(private val appCompatImageView: AppCompatImageView, private v
     }
 
     fun stop() {
-        active = false
+        galleryJob?.cancel()
     }
 
 

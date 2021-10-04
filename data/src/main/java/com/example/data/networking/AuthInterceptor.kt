@@ -10,7 +10,7 @@ class AuthInterceptor : Interceptor {
         return chain.request().let { originalRequest ->
 
             val request = originalRequest.newBuilder()
-                .addHeader(Constants.AUTH_HEADER, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmOGUxYjExYzdhODNmZGMwNjJhNDc1NTRiYzZhMTY3YSIsInN1YiI6IjYxNTZkMmE0ZWIxNGZhMDA0M2Q2ZTQ0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rMtsbwVXF_HTF6x8C7aus9JT8wzOIO5IOETxrsfNjSE")
+                .addHeader(Constants.AUTH_HEADER, "Bearer ${Constants.API_KEY}")
                 .build()
 
             chain.proceed(request)

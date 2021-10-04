@@ -1,10 +1,12 @@
 package com.example.app_entrevista_grupo_salinas.home.viewmodel
 
+import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.app_entrevista_grupo_salinas.R
 import com.example.data.business.movie.dto.MovieDto
 import com.example.data.business.movie.mapper.toRoomEntity
 import com.example.data.di.Local
@@ -41,6 +43,9 @@ class HomeViewModel @Inject constructor(
     private val _mediaContentLiveData = MutableLiveData<MediaContentResult>()
     val mediaContentLiveData = _mediaContentLiveData as LiveData<MediaContentResult>
 
+    private val _errorLiveData = MutableLiveData<Int>()
+    val errorLiveData = _errorLiveData as LiveData<Int>
+
     private suspend fun getLocalMostPopularMovies(){
         when(val result = localGetMostPopularMoviesUseCase()) {
             is UseCaseResult.Success -> {
@@ -75,6 +80,7 @@ class HomeViewModel @Inject constructor(
                     }
                 }
                 is UseCaseResult.Error -> {
+                    _errorLiveData.postValue(R.string.no_internet_connection)
                 }
             }
         }
@@ -95,7 +101,7 @@ class HomeViewModel @Inject constructor(
                     }
                 }
                 is UseCaseResult.Error -> {
-
+                    _errorLiveData.postValue(R.string.no_internet_connection)
                 }
             }
         }
@@ -125,6 +131,13 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             getLocalMostPopularMovies()
             getLocalNowPlayingMovies()
+        }
+    }
+    
+    fun getMoviesFromRemote(){
+        viewModelScope.launch(Dispatchers.IO) {
+            getRemoteMostPopularMovies()
+            getRemoteNowPlayingMovies()
         }
     }
 

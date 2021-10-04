@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">Neflis</string>
+    <string name="app_name">Movies App</string>
     <string name="title_domain">Domain module</string>
     <string name="home_most_popular_movies">Most popular movies</string>
     <string name="home_title">Home</string>
     <string name="home_playing_now_movies">Now playing movies</string>
     <string name="media_content_detail_title_section">Movie Detail</string>
     <string name="media_content_detail_videos_title">Videos</string>
+    <string name="no_internet_connection">Please check your internet connection</string>
 </resources>

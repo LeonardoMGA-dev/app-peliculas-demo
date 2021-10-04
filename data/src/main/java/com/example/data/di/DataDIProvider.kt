@@ -9,6 +9,7 @@ import com.example.data.networking.RestService
 import com.example.data.persistance.AppPreferences
 import com.example.data.persistance.LocalDatabase
 import com.example.data.persistance.dao.DBMovieDao
+import com.example.data.utils.Constants
 import com.example.domain.movie.usecase.*
 import dagger.Module
 import dagger.Provides
@@ -31,7 +32,7 @@ object DataDIProvider {
             .addInterceptor(AuthInterceptor())
             .build()
         return Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/")
+            .baseUrl(Constants.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(authInterceptor)
             .build()
